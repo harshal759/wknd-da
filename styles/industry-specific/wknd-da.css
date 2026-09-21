@@ -1,0 +1,104 @@
+body.wknd main .section.wknd-banner{
+    margin:0;
+}
+body.wknd main .section.wknd-banner .hero p a,
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a{
+    padding: 12px 24px !important;
+    margin: 10px 5px;
+    background-color: #FB923C !important;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    border: 2px solid #FB923C !important;
+    border-radius: 4px;
+}
+
+body.wknd main .section.wknd-banner .hero p a::after,
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a::after{
+    color:#FFFFFF;
+    width: 15px;
+    height: 20px;
+    float: right;
+    font-size: 20px;
+    margin-left: 8px;
+}
+
+body.wknd main .section.wknd-banner .hero p a:hover,
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover{
+    background-color:transparent !important;
+    border:2px solid #fff !important;
+}
+
+body.wknd main .section.teaser-container .cards-wrapper,
+body.wknd main .section.columns-container .columns-wrapper,
+body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template-wrapper{
+    margin: auto;
+    max-width: 1200px;
+    padding: 0 32px;
+}
+body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template{
+    padding: 0 32px;
+}
+
+body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a{
+    padding: 12px 24px !important;
+    margin: 10px 0px 0px 0px;
+    background-color: transparent !important;
+    color: #FB923C !important;
+    text-decoration: none;
+    border: 2px solid #FB923C !important;
+    border-radius: 4px;
+}
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a{
+    margin: 10px 0px 0px 0px;
+}
+body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a::after{
+    color: #FB923C !important;
+    width: 15px;
+    height: 20px;
+    float: right;
+        font-size: 20px;
+    margin-left: 8px;
+}
+body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a:hover{
+    background-color: #FB923C !important;
+    color: #FFFFFF !important;
+}
+
+body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a:hover::after{
+    color: #FFFFFF !important;
+}
+
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover{
+    background-color: transparent !important;
+    color: #FB923C !important;
+    border: 2px solid #FB923C !important;
+}
+
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover::after,
+body.wknd main .section.columns-container .columns-wrapper  p a:hover,
+body.wknd main .section.columns-container .columns-wrapper  p a:hover::after,
+body.wknd main .section.adventures p a:hover,
+body.wknd main .section.adventures p a:hover::after{
+    color: #FB923C !important;
+}
+
+body.wknd main .section.dynamicmedia-template-container,
+body.wknd main .section.columns-container{
+    margin:0;
+}
+
+body.wknd main .section.columns-container .columns-img-col img{
+    height:auto;
+}
+body.wknd main .section.columns-container .columns-wrapper  p a:hover{
+    text-decoration: underline;
+}
+
+body.wknd main .section.adventures{
+    margin:0;
+    padding-top:6rem;
+}
+
+
+
+
