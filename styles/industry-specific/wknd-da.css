@@ -1,8 +1,30 @@
+body.wknd .pt6rem{
+    padding-top: 6rem;
+}
+
+body.wknd .header nav .nav-sections ul > li > a:hover {
+    color: #ffffff;
+    
+}
+body.wknd .header nav .nav-sections ul > li > a::before{
+background:#FB923C;
+transform-origin: 50% 100%;
+    transition: clip-path 0.3s, transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
+    clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+}
+
+body.wknd .header nav .nav-sections ul > li > a:hover::before {
+    transform: translate3d(0, 2px, 0) scale3d(1.08, 3, 1);
+    clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0, 50% 0, 50% 100%, 50% 100%, 0 100%, 100% 100%, 100% 0%);
+}
+
 body.wknd main .section.wknd-banner{
     margin:0;
 }
 body.wknd main .section.wknd-banner .hero p a,
-body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a{
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a,
+body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button
+{
     padding: 12px 24px !important;
     margin: 10px 5px;
     background-color: #FB923C !important;
@@ -23,21 +45,34 @@ body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body
 }
 
 body.wknd main .section.wknd-banner .hero p a:hover,
-body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover{
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover,
+body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button:hover{
     background-color:transparent !important;
     border:2px solid #fff !important;
 }
 
-body.wknd main .section.teaser-container .cards-wrapper,
+body.wknd main .section.wknd-cards .cards-wrapper,
+body.wknd main .section .teaser-wrapper,
 body.wknd main .section.columns-container .columns-wrapper,
 body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template-wrapper{
     margin: auto;
     max-width: 1200px;
-    padding: 0 32px;
 }
-body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template{
-    padding: 0 32px;
+@media (width >= 900px) {
+    body.wknd main .section.wknd-cards .cards-wrapper .cards,
+    body.wknd main .section .teaser-wrapper .teaser,
+    body.wknd main .section.columns-container .columns-wrapper,
+    body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template{
+        padding: 0 32px;
+    }
 }
+@media (width < 900px) {
+body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template,
+body.wknd main .section .teaser-wrapper .teaser{
+        padding: 0 24px;
+}
+}
+
 
 body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a{
     padding: 12px 24px !important;
@@ -83,7 +118,8 @@ body.wknd main .section.adventures p a:hover::after{
 }
 
 body.wknd main .section.dynamicmedia-template-container,
-body.wknd main .section.columns-container{
+body.wknd main .section.columns-container,
+body.wknd main .section.teaser-container{
     margin:0;
 }
 
@@ -99,6 +135,111 @@ body.wknd main .section.adventures{
     padding-top:6rem;
 }
 
+body.wknd main .section .teaser-container,
+body.wknd main .section  .teaser-wrapper .swoosh-layers .swoosh.first {
+    height:538px;
+}
+body.wknd main .section .teaser-container .video-container,
+body.wknd main .section .teaser-container .background-image{
+    height:482px;
+}
+body.wknd main .section .teaser-wrapper .teaser-swoosh-wrapper {
+    width: 595px;
+    height: 595px;
+}
+body.wknd main .section .teaser-wrapper .teaser-swoosh-wrapper .swoosh-layers{
+    height: 518px;
+}
+body.wknd main .section .teaser-wrapper .swoosh-layers .swoosh.second {
+    width: 616px;
+}
+
+@media (width < 1024px) {
+    body.wknd main .section.wknd-cards  .carousel-wrapper .carousel > ul {
+        display: block;
+    }
+}
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel ul li{
+    position:relative;
+}
+body.wknd main .section.wknd-cards picture,
+body.wknd main .section.columns-container .columns-wrapper
+ {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+body.wknd main .section.wknd-cards picture::before,
+body.wknd main .section.columns-container .columns-wrapper::before{
+    position: absolute;
+    top: 0;
+    left: -75%;
+    z-index: 111;
+    display: block;
+    content: '';
+    width: 50%;
+    height: 100%;
+background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .3) 100%);
+    transform: skewX(-25deg);
+}
+body.wknd main .section.wknd-cards picture:hover::before,
+body.wknd main .section.columns-container .columns-wrapper:hover::before {
+	-webkit-animation: shine .75s;
+	animation: shine .75s;
+}
+@-webkit-keyframes shine {
+	100% {
+		left: 125%;
+	}
+}
+@keyframes shine {
+	100% {
+		left: 125%;
+	}
+}
+/* Image Hover Effect Shine - end */
 
 
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel ul li .cards-card-body{
+    position:absolute;
+    flex-grow: 1;
+    flex-basis: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 10px 0 0 0;
+    color: #ffffff;
+    text-align: center;
+    align-items: flex-end;
+    bottom: 0;
+    left: initial;
+    right: 0;
+    display: block;
+    align-content: center;
+}
+
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel .button-container .prev,
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel .button-container .next{
+    margin: 0;
+    top: 50%;
+    right:auto;
+    border-radius: 50%;
+    padding:12px 16px;
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    opacity:unset;
+}
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel .button-container .prev{
+    left:20px;
+}
+body.wknd main .section.wknd-cards .carousel-wrapper .carousel .button-container .next{
+   right: 20px;
+}
+body.wknd main .section.wknd-cards .carousel .button-container .prev:hover,
+body.wknd main .section.wknd-cards .carousel .button-container .next:hover {
+    background-color: #FB923C;
+    border-color: #FB923C;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index:10;
+}
 
