@@ -243,8 +243,8 @@ function searchBox(block, config) {
   const box = document.createElement('div');
   box.classList.add('search-box');
   box.append(
-    searchIcon(),
     searchInput(block, config),
+    searchIcon(),  
   );
 
   return box;
@@ -254,16 +254,81 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
   const source = block.querySelector('a[href]') ? block.querySelector('a[href]').href : '/query-index.json';
   block.innerHTML = '';
-  block.append(
+  // added by bs 
+   block.classList.add('search-icon');
+
+  // Search trigger
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'search-trigger';
+  trigger.setAttribute('aria-label', 'Open search');
+
+  trigger.append(searchIcon());
+
+  // Search overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'search-overlay';
+
+  // Overlay panel
+  const panel = document.createElement('div');
+  panel.className = 'search-overlay-panel';
+
+  // Search input goes INSIDE overlay
+  panel.append(
     searchBox(block, { source, placeholders }),
-    searchResultsContainer(block),
   );
 
-  if (searchParams.get('q')) {
-    const input = block.querySelector('input');
-    input.value = searchParams.get('q');
-    input.dispatchEvent(new Event('input'));
-  }
+  overlay.append(panel);
+
+  block.append(
+    trigger,
+    overlay,
+  );
+
+  // Open overlay
+  const openOverlay = () => {
+    overlay.classList.add('open');
+
+    const input = overlay.querySelector('input.search-input');
+
+    if (input) {
+      input.focus();
+    }
+  };
+
+  // Close overlay
+  const closeOverlay = () => {
+    overlay.classList.remove('open');
+    clearSearch(block);
+  };
+
+  trigger.addEventListener('click', openOverlay);
+
+  // Close when clicking outside the panel
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closeOverlay();
+    }
+  });
+
+  // Close with Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeOverlay();
+    }
+  });
+// commented by bs
+
+  // block.append(
+  //   searchBox(block, { source, placeholders }),
+  //   searchResultsContainer(block),
+  // );
+
+  // if (searchParams.get('q')) {
+  //   const input = block.querySelector('input');
+  //   input.value = searchParams.get('q');
+  //   input.dispatchEvent(new Event('input'));
+  // }
 
   decorateIcons(block);
 }

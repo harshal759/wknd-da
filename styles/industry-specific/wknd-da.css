@@ -1,7 +1,9 @@
 body.wknd .pt6rem{
     padding-top: 6rem;
 }
-
+body.wknd .dynamicmedia-template .dm-template-image {
+    display:inline;
+}
 body.wknd .header nav .nav-sections ul > li > a:hover {
     color: #ffffff;
     
@@ -54,7 +56,9 @@ body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button:hover{
 body.wknd main .section.wknd-cards .cards-wrapper,
 body.wknd main .section .teaser-wrapper,
 body.wknd main .section.columns-container .columns-wrapper,
-body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template-wrapper{
+body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template-wrapper,
+body.wknd main .adventures,
+body.wknd .pt6rem .accordion-wrapper{
     margin: auto;
     max-width: 1200px;
 }
@@ -62,13 +66,17 @@ body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template-w
     body.wknd main .section.wknd-cards .cards-wrapper .cards,
     body.wknd main .section .teaser-wrapper .teaser,
     body.wknd main .section.columns-container .columns-wrapper,
-    body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template{
+    body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template,
+    body.wknd main .adventures.tabs-wrapper,
+    body.wknd .pt6rem .accordion-wrapper .accordion{
         padding: 0 32px;
     }
 }
 @media (width < 900px) {
 body.wknd main .section.dynamicmedia-template-container .dynamicmedia-template,
-body.wknd main .section .teaser-wrapper .teaser{
+body.wknd main .section .teaser-wrapper .teaser,
+body.wknd main .adventures .tabs-wrapper,
+body.wknd .pt6rem .accordion-wrapper .accordion{
         padding: 0 24px;
 }
 }
@@ -113,7 +121,8 @@ body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body
 body.wknd main .section.columns-container .columns-wrapper  p a:hover,
 body.wknd main .section.columns-container .columns-wrapper  p a:hover::after,
 body.wknd main .section.adventures p a:hover,
-body.wknd main .section.adventures p a:hover::after{
+body.wknd main .section.adventures p a:hover::after,
+body.wknd main .adventures .tabs-wrapper .tabs .tabs-nav .tabs-tab:hover{
     color: #FB923C !important;
 }
 
@@ -131,8 +140,8 @@ body.wknd main .section.columns-container .columns-wrapper  p a:hover{
 }
 
 body.wknd main .section.adventures{
-    margin:0;
     padding-top:6rem;
+    margin:auto !important;
 }
 
 body.wknd main .section .teaser-container,
@@ -243,3 +252,115 @@ body.wknd main .section.wknd-cards .carousel .button-container .next:hover {
     z-index:10;
 }
 
+body.wknd main .adventures .tabs-wrapper .tabs .tabs-nav {
+    flex-wrap:nowrap;
+    overflow-x: auto;
+    overflow-y:hidden;
+}
+
+body.wknd main .adventures .tabs-wrapper .tabs .tabs-nav .tabs-tab[aria-selected='true'] {
+    border-bottom-color: #FB923C;
+    background-color: transparent;
+    color: #FB923C;
+}
+
+body.wknd main .adventures .tabs-wrapper .tabs-item .tabs-content{
+    padding: 0;
+    background-color: #ffffff;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    min-height: 400px;
+}
+body.wknd main .adventures .tabs-wrapper .tabs-content picture{
+    margin:0;
+    overflow: hidden;
+}
+body.wknd main .adventures .tabs-wrapper .tabs-content picture img{
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+body.wknd main .adventures .tabs-wrapper .tabs-content .tabs-text{
+   box-sizing: border-box;
+    flex: 0 0 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body.wknd .pt6rem.accordion-container{
+    padding-bottom: 6rem;
+}
+@media (max-width: 767px) {
+    body.wknd main .adventures .tabs-wrapper .tabs-item .tabs-content {
+        flex-direction: column;
+        min-height: auto;
+    }
+    body.wknd main .adventures .tabs-wrapper .tabs-content picture{
+    max-height:300px;
+}
+body.wknd main .adventures .tabs-wrapper .tabs-item .tabs-text{
+padding:24px;
+}
+body.wknd main .adventures .tabs-wrapper .tabs-item .tabs-text h3{
+font-size:24px
+}
+body.wknd main .adventures .tabs-wrapper .tabs-item .tabs-text p,
+body.wknd main .pt6rem.accordion-container .accordion-wrapper .accordion{
+font-size:16px
+}
+}
+
+/* search css */
+body.wknd header .search {
+  --search-input-height: 40px;
+  padding-top: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+body.wknd header nav{
+    justify-content: space-between;
+}
+body.wknd header .search-container{
+    position:unset !important;
+    align-items:flex-start !important;
+    max-width:none !important;
+    width:auto !important;
+    margin:0 !important;
+}
+body.wknd header .search-box,.search-input{
+    outline:none !important;
+    border:none!important
+}
+body.wknd header .search .search-box {
+    display: block !important;
+    position: relative !important;
+    align-items: center !important;
+}
+body.wknd header .search .search-box .icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+body.wknd header .search .icon img{
+    filter:brightness(0) invert(1);
+}
+body.wknd header .icon.icon-search img,
+body.wknd header .search-icon{
+    width:24px !important;
+    height:24px !important;
+}
