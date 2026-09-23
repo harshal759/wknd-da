@@ -25,7 +25,8 @@ body.wknd main .section.wknd-banner{
 }
 body.wknd main .section.wknd-banner .hero p a,
 body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a,
-body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button
+body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button,
+body.wknd main .section.wknd-article .cards ul li .cards-card-body a
 {
     padding: 12px 24px !important;
     margin: 10px 5px;
@@ -37,13 +38,15 @@ body.wknd main .section .teaser-wrapper .teaser-title-wrapper .button
 }
 
 body.wknd main .section.wknd-banner .hero p a::after,
-body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a::after{
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a::after,
+body.wknd main .section.wknd-article .cards ul li .cards-card-body a::after{
     color:#FFFFFF;
     width: 15px;
     height: 20px;
     float: right;
     font-size: 20px;
     margin-left: 8px;
+    padding-right:0px;
 }
 
 body.wknd main .section.wknd-banner .hero p a:hover,
@@ -102,7 +105,7 @@ body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p 
         font-size: 20px;
     margin-left: 8px;
 }
-body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a:hover{
+body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p a:hover,{
     background-color: #FB923C !important;
     color: #FFFFFF !important;
 }
@@ -111,7 +114,8 @@ body.wknd main .section.wknd-cards .cards-wrapper .image-top .cards-card-body p 
     color: #FFFFFF !important;
 }
 
-body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover{
+body.wknd main .section.wknd-cards .cards-wrapper .image-bottom .cards-card-body p a:hover,
+body.wknd main .section.wknd-article .cards ul li .cards-card-body a:hover{
     background-color: transparent !important;
     color: #FB923C !important;
     border: 2px solid #FB923C !important;
@@ -122,7 +126,8 @@ body.wknd main .section.columns-container .columns-wrapper  p a:hover,
 body.wknd main .section.columns-container .columns-wrapper  p a:hover::after,
 body.wknd main .section.adventures p a:hover,
 body.wknd main .section.adventures p a:hover::after,
-body.wknd main .adventures .tabs-wrapper .tabs .tabs-nav .tabs-tab:hover{
+body.wknd main .section.wknd-article .cards ul li .cards-card-body a:hover::after
+{
     color: #FB923C !important;
 }
 
@@ -363,4 +368,63 @@ body.wknd header .icon.icon-search img,
 body.wknd header .search-icon{
     width:24px !important;
     height:24px !important;
+}
+
+/* new block */
+body.wknd main .section.wknd-article{
+    margin:0;
+    padding:0;
+}
+body.wknd main .section.wknd-article .cards ul{
+    padding:0;
+}
+body.wknd main .section.wknd-article .cards ul li{
+    gap:0;
+}
+body.wknd main .section.wknd-article .cards ul li .cards-card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 60px;
+    background: #dcdcdc;
+    margin: 0;
+    flex:0 0 50%;
+    /* position: relative;
+    z-index: 2; */
+}
+body.wknd main .section.wknd-article .cards ul li .cards-card-body h2{
+    font-size: 30px;
+    line-height: 50px;
+}
+body.wknd main .section.wknd-article .cards ul li .cards-card-body h2::after {
+    background-color: #FB923C;
+    content: "";
+    display: block;
+    height: 5px;
+    margin: auto;
+    transition: width .4s ease-in-out;
+    width: 128px;
+    margin: 10px auto;
+}
+body.wknd main .section.wknd-article .cards ul li .cards-card-body h3{
+font-size: 20px;
+    line-height: 30px;
+    color: #666;
+    margin:0;
+}
+body.wknd main .section.wknd-article .cards ul li .cards-card-body p{
+    margin:12.5px 0;
+}
+@media (width < 1024px) {
+    body.wknd main .section.wknd-article .cards ul li .cards-card-body{
+      text-align: center;
+        align-items: center;
+    }
+}
+@media (width < 767px) {
+    body.wknd main .section.wknd-article .cards ul li .cards-card-body{
+      padding:30px;
+    }
 }
