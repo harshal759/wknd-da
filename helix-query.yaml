@@ -18,16 +18,10 @@ indices:
 
       title:
         select: main h1
-        value: textContent
-
-      header:
-        select: main h1
-        value: textContent
-
+        value: textContent(el)
       description:
-        select: head meta[name="description"]
-        value: content
-
+        select: head > meta[name="description"]
+        value: attribute(el, "content")
       image:
-        select: main img
-        value: src
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, "content"), "^(https?:\/\/.*?(aem.live))+(.*)|^(.*)")
