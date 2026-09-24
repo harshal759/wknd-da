@@ -83,48 +83,48 @@ export async function fetchData(source) {
   return json.data;
 }
 
-function getBodySnippet(result, searchTerms) {
-  const body = (result.body || '').trim();
+// function getBodySnippet(result, searchTerms) {
+//   const body = (result.body || '').trim();
 
-  if (!body) return '';
+//   if (!body) return '';
 
-  const lowerBody = body.toLowerCase();
+//   const lowerBody = body.toLowerCase();
 
-  let matchIndex = -1;
-  let matchedTerm = '';
+//   let matchIndex = -1;
+//   let matchedTerm = '';
 
-  searchTerms.forEach((term) => {
-    const index = lowerBody.indexOf(term.toLowerCase());
+//   searchTerms.forEach((term) => {
+//     const index = lowerBody.indexOf(term.toLowerCase());
 
-    if (index >= 0 && (matchIndex === -1 || index < matchIndex)) {
-      matchIndex = index;
-      matchedTerm = term;
-    }
-  });
+//     if (index >= 0 && (matchIndex === -1 || index < matchIndex)) {
+//       matchIndex = index;
+//       matchedTerm = term;
+//     }
+//   });
 
-  if (matchIndex === -1) return '';
+//   if (matchIndex === -1) return '';
 
-  const start = Math.max(0, matchIndex - 80);
-  const end = Math.min(body.length, matchIndex + matchedTerm.length + 120);
+//   const start = Math.max(0, matchIndex - 80);
+//   const end = Math.min(body.length, matchIndex + matchedTerm.length + 120);
 
-  let snippet = body.substring(start, end);
+//   let snippet = body.substring(start, end);
 
-  if (start > 0) {
-    snippet = `...${snippet}`;
-  }
+//   if (start > 0) {
+//     snippet = `...${snippet}`;
+//   }
 
-  if (end < body.length) {
-    snippet = `${snippet}...`;
-  }
+//   if (end < body.length) {
+//     snippet = `${snippet}...`;
+//   }
 
-  return snippet;
-}
+//   return snippet;
+// }
 
 function renderResult(result, searchTerms, titleTag) {
   const li = document.createElement('li');
   const a = document.createElement('a');
   a.href = result.path;
-  const bodySnippet = getBodySnippet(result, searchTerms);
+  // const bodySnippet = getBodySnippet(result, searchTerms);
   if (result.image) {
     const wrapper = document.createElement('div');
     wrapper.className = 'search-result-image';
@@ -148,13 +148,13 @@ function renderResult(result, searchTerms, titleTag) {
     highlightTextElements(searchTerms, [description]);
     a.append(description);
   }
-  else if (bodySnippet) {
-    const body = document.createElement('p');
-    body.className = 'search-result-snippet';
-    body.textContent = bodySnippet;
-    highlightTextElements(searchTerms, [body]);
-    a.append(body);
-  }
+  // else if (bodySnippet) {
+  //   const body = document.createElement('p');
+  //   body.className = 'search-result-snippet';
+  //   body.textContent = bodySnippet;
+  //   highlightTextElements(searchTerms, [body]);
+  //   a.append(body);
+  // }
   li.append(a);
   return li;
 }
@@ -217,7 +217,7 @@ function filterData(searchTerms, data) {
       return;
     }
 
-    const metaContents = `${result.title} ${result.description} ${result.body} ${result.path.split('/').pop()}`.toLowerCase();
+    const metaContents = `${result.title} ${result.description} ${result.path.split('/').pop()}`.toLowerCase();
     searchTerms.forEach((term) => {
       const idx = metaContents.indexOf(term);
       if (idx < 0) return;
