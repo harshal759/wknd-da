@@ -372,6 +372,7 @@ body.wknd header .search-icon{
 
 /* search-results */
 body.wknd header .search-results {
+    display:none;
     background: #ffffff;
     border: 1px solid #dadada;
     border-radius: 8px;

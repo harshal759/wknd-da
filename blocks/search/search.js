@@ -117,6 +117,7 @@ function renderResult(result, searchTerms, titleTag) {
 function clearSearchResults(block) {
   const searchResults = block.querySelector('.search-results');
   searchResults.innerHTML = '';
+  searchResults.style.display = 'none';
 }
 
 function clearSearch(block) {
@@ -132,6 +133,7 @@ function clearSearch(block) {
 async function renderResults(block, config, filteredData, searchTerms) {
   clearSearchResults(block);
   const searchResults = block.querySelector('.search-results');
+  searchResults.style.display = 'block';
   const headingTag = searchResults.dataset.h;
 
   if (filteredData.length) {
