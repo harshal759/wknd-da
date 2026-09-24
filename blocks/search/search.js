@@ -124,6 +124,7 @@ function renderResult(result, searchTerms, titleTag) {
   const li = document.createElement('li');
   const a = document.createElement('a');
   a.href = result.path;
+  const bodySnippet = getBodySnippet(result, searchTerms);
   if (result.image) {
     const wrapper = document.createElement('div');
     wrapper.className = 'search-result-image';
@@ -147,8 +148,6 @@ function renderResult(result, searchTerms, titleTag) {
     highlightTextElements(searchTerms, [description]);
     a.append(description);
   }
-  const bodySnippet = getBodySnippet(result, searchTerms);
-
   else if (bodySnippet) {
     const body = document.createElement('p');
     body.className = 'search-result-snippet';
