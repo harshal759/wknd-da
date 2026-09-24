@@ -381,7 +381,6 @@ body.wknd header .search-results {
     overflow-x: hidden;
     padding: 12px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-    display: block;
     margin-top: 16px;
     max-width: 100%;
     box-sizing: border-box;
