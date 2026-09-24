@@ -100,8 +100,8 @@ function renderResult(result, searchTerms, titleTag) {
     // const link = document.createElement('a');
     // link.href = result.path;
     title.textContent = result.title;
-    highlightTextElements(searchTerms, [link]);
-    title.append(link);
+    highlightTextElements(searchTerms, [title]);
+    // title.append(link);
     a.append(title);
   }
   if (result.description) {
