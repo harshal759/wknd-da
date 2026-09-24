@@ -97,9 +97,9 @@ function renderResult(result, searchTerms, titleTag) {
   if (result.title) {
     const title = document.createElement(titleTag);
     title.className = 'search-result-title';
-    const link = document.createElement('a');
-    link.href = result.path;
-    link.textContent = result.title;
+    // const link = document.createElement('a');
+    // link.href = result.path;
+    title.textContent = result.title;
     highlightTextElements(searchTerms, [link]);
     title.append(link);
     a.append(title);
@@ -276,6 +276,7 @@ export default async function decorate(block) {
   // Search input goes INSIDE overlay
   panel.append(
     searchBox(block, { source, placeholders }),
+    searchResultsContainer(block),
   );
 
   overlay.append(panel);
