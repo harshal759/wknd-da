@@ -1,8 +1,13 @@
 import { fetchPlaceholders } from './placeholders.js';
 
 export const PATH_PREFIX = '/language-masters';
-export const SUPPORTED_LANGUAGES = ['en'];
-export const INTERNAL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
+export const SUPPORTED_LANGUAGES = [
+  'en',    // English
+  'fr',    // French
+  'de',    // German
+  ];
+  
+export const INTERNL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
 let lang;
 
 export function isAuthorEnvironment() {
@@ -125,6 +130,74 @@ export function getLanguage() {
     }
   }
   return lang;
+}
+
+export function computeLocalizedUrl(targetLang) {
+  try {
+    if (!targetLang || typeof targetLang !== 'string') return window.location.href;
+    const { langCode, suffix, isContentPath } = getPathDetails();
+
+    const url = new URL(window.location.href);
+    const query = url.search || '';
+    const hash = url.hash || '';
+
+    if (!isContentPath) {
+      // EDS: /{lang}/{suffix}
+      const cleanSuffix = suffix ? suffix.replace(/^\/+/, '') : '';
+      if (targetLang.toLowerCase() === 'en' && !cleanSuffix) {
+        // Homepage → root
+        return `/${query}${hash}`.replace(/\/\/?(?=\?|#|$)/, '/');
+      }
+      const next = `/${targetLang}${cleanSuffix ? `/${cleanSuffix}` : ''}`;
+      return `${next}${query}${hash}`;
+    }
+
+    // AEM author: /content/{site}/language-masters/{lang}/{suffix}.html
+    // getSiteName can be async; fall back to path parsing if needed synchronously
+    const { pathname } = window.location;
+    const parts = pathname.split('/');
+    const siteNameFromPath = parts[2] || '';
+    const base = `/content/${siteNameFromPath}${PATH_PREFIX}/${targetLang}`;
+    // Normalize suffix:
+    // - treat ".html" (language root) as empty
+    // - strip any trailing .html from non-empty suffixes to avoid double extensions
+    const normalizedSuffix = (() => {
+      if (!suffix) return '';
+      const withoutLeadingSlashes = suffix.replace(/^\/+/, '');
+      // Remove one or more trailing ".html" occurrences
+      const strippedTrailingHtml = withoutLeadingSlashes.replace(/(?:\.html)+$/i, '');
+      // Treat purely ".html" (or repeated) as empty suffix
+      if (!strippedTrailingHtml || strippedTrailingHtml === '.') return '';
+      return strippedTrailingHtml;
+    })();
+    const withSuffix = normalizedSuffix ? `/${normalizedSuffix}` : '';
+    return `${base}${withSuffix}.html${query}${hash}`;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error('computeLocalizedUrl failed', e);
+    return window.location.href;
+  }
+}
+
+/**
+ * Discover available languages from placeholders.
+ * Authors can set a row in placeholders with Key=languages and Text="en,fr,de".
+ * Falls back to ['en'] if not present.
+ */
+export async function discoverLanguagesFromPlaceholders() {
+  try {
+    const placeholders = await fetchPlaceholders();
+    const raw = placeholders.languages || placeholders.availableLanguages || '';
+    const parsed = String(raw)
+      .split(',')
+      .map((s) => s && s.trim())
+      .filter(Boolean);
+    if (parsed.length) return parsed;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('discoverLanguagesFromPlaceholders failed', e);
+  }
+  return ['en'];
 }
 
 export function setPageLanguage() {
