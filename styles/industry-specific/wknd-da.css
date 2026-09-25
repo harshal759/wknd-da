@@ -352,14 +352,7 @@ body.wknd header .search .search-box {
     align-items: center !important;
 }
 body.wknd header .search .search-box .icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
+    display:none;
 }
 body.wknd header .search .icon img{
     filter:brightness(0) invert(1);
@@ -432,6 +425,10 @@ body.wknd header .search-results li p {
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+body.wknd .search-box .search-input::-webkit-search-cancel-button {
+  opacity: 1;
+  color: #000 !important;
 }
 
 /* new block */
