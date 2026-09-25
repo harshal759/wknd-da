@@ -13,9 +13,6 @@ indices:
     target: /en/query-index.json
     properties:
       title:
-        select: main h1
-        value: textContent(el)
-      navTitle:
         select: head > meta[property="og:title"]
         value: attribute(el, "content")
       description:
