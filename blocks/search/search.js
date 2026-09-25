@@ -83,48 +83,36 @@ export async function fetchData(source) {
   return json.data;
 }
 
-// function getBodySnippet(result, searchTerms) {
-//   const body = (result.body || '').trim();
-
-//   if (!body) return '';
-
-//   const lowerBody = body.toLowerCase();
-
-//   let matchIndex = -1;
-//   let matchedTerm = '';
-
-//   searchTerms.forEach((term) => {
-//     const index = lowerBody.indexOf(term.toLowerCase());
-
-//     if (index >= 0 && (matchIndex === -1 || index < matchIndex)) {
-//       matchIndex = index;
-//       matchedTerm = term;
-//     }
-//   });
-
-//   if (matchIndex === -1) return '';
-
-//   const start = Math.max(0, matchIndex - 80);
-//   const end = Math.min(body.length, matchIndex + matchedTerm.length + 120);
-
-//   let snippet = body.substring(start, end);
-
-//   if (start > 0) {
-//     snippet = `...${snippet}`;
-//   }
-
-//   if (end < body.length) {
-//     snippet = `${snippet}...`;
-//   }
-
-//   return snippet;
-// }
+function getSnippet(result, searchTerms) {
+  const sourceText = (result.body || result.description || '').trim();
+  if (!sourceText) return '';
+  const lc = sourceText.toLowerCase();
+  let bestIdx = -1;
+  // Prefer exact phrase if present
+  // if (searchPhrase && searchPhrase.length >= 2) {
+  //   const phraseIdx = lc.indexOf(searchPhrase);
+  //   if (phraseIdx >= 0) bestIdx = phraseIdx;
+  // }
+  searchTerms.forEach((t) => {
+    const idx = lc.indexOf(t.toLowerCase());
+    if (idx >= 0 && (bestIdx === -1 || idx < bestIdx)) bestIdx = idx;
+  });
+  let start = 0;
+  let end = Math.min(sourceText.length, 180);
+  if (bestIdx >= 0) {
+    start = Math.max(0, bestIdx - 60);
+    end = Math.min(sourceText.length, bestIdx + 120);
+  }
+  let snippet = sourceText.slice(start, end).replace(/\s+/g, ' ').trim();
+  if (start > 0) snippet = `… ${snippet}`;
+  if (end < sourceText.length) snippet = `${snippet} …`;
+  return snippet;
+}
 
 function renderResult(result, searchTerms, titleTag) {
   const li = document.createElement('li');
   const a = document.createElement('a');
   a.href = result.path;
-  // const bodySnippet = getBodySnippet(result, searchTerms);
   if (result.image) {
     const wrapper = document.createElement('div');
     wrapper.className = 'search-result-image';
@@ -142,19 +130,21 @@ function renderResult(result, searchTerms, titleTag) {
     // title.append(link);
     a.append(title);
   }
-  if (result.description) {
+  // if (result.description) {
+  //   const description = document.createElement('p');
+  //   description.textContent = result.description;
+  //   highlightTextElements(searchTerms, [description]);
+  //   a.append(description);
+  // }
+  const snippet = getSnippet(result, searchTerms);
+
+  if (snippet) {
     const description = document.createElement('p');
-    description.textContent = result.description;
+    // description.className = 'search-result-snippet';
+    description.textContent = snippet;
     highlightTextElements(searchTerms, [description]);
     a.append(description);
   }
-  // else if (bodySnippet) {
-  //   const body = document.createElement('p');
-  //   body.className = 'search-result-snippet';
-  //   body.textContent = bodySnippet;
-  //   highlightTextElements(searchTerms, [body]);
-  //   a.append(body);
-  // }
   li.append(a);
   return li;
 }
@@ -217,7 +207,7 @@ function filterData(searchTerms, data) {
       return;
     }
 
-    const metaContents = `${result.title} ${result.description} ${result.path.split('/').pop()}`.toLowerCase();
+    const metaContents = `${result.title} ${result.description} ${result.body} ${result.path.split('/').pop()}`.toLowerCase();
     searchTerms.forEach((term) => {
       const idx = metaContents.indexOf(term);
       if (idx < 0) return;
