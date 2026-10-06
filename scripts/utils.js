@@ -5,7 +5,8 @@ export const SUPPORTED_LANGUAGES = [
   'en',    // English
   'fr',    // French
   'de',
-  'zh',    // German
+  'zh',
+  'hi',    // German
   ];
   
 export const INTERNL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
