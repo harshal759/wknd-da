@@ -328,7 +328,6 @@ function loadDelayed() {
 
 async function loadPage() {
   window.wbgData ||= {};
-  // await discoverLanguagesFromPlaceholders();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
