@@ -4,6 +4,7 @@ import {
   getLanguage,
   computeLocalizedUrl,
   discoverLanguagesFromPlaceholders,
+  SUPPORTED_LANGUAGES,
 } from '../../scripts/utils.js';
 
 // media query match that indicates mobile/tablet width
@@ -198,7 +199,7 @@ async function createLanguageSwitcher(navTools) {
   const langs = await discoverLanguagesFromPlaceholders();
 
   const uniqueLangs = [
-    ...new Set(langs && langs.length ? langs : ['en']),
+    ...new Set(SUPPORTED_LANGUAGES),
   ];
 
   if (uniqueLangs.length <= 1) {
@@ -280,6 +281,7 @@ async function createLanguageSwitcher(navTools) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  await discoverLanguagesFromPlaceholders();
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const currentLang = getLanguage();
