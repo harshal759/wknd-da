@@ -4,7 +4,8 @@ export const PATH_PREFIX = '/language-masters';
 export const SUPPORTED_LANGUAGES = [
   'en',    // English
   'fr',    // French
-  'de',    // German
+  'de',
+  'zh',    // German
   ];
   
 export const INTERNL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
