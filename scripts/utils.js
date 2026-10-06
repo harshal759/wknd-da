@@ -191,12 +191,16 @@ export async function discoverLanguagesFromPlaceholders() {
       SUPPORTED_LANGUAGES.length = 0;
       SUPPORTED_LANGUAGES.push(...parsed);
       
-    if (parsed.length) return parsed;
+    if (parsed.length) return SUPPORTED_LANGUAGES;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.warn('discoverLanguagesFromPlaceholders failed', e);
   }
-  return ['en'];
+  SUPPORTED_LANGUAGES.length = 0;
+  SUPPORTED_LANGUAGES.push('en');
+
+  return SUPPORTED_LANGUAGES;
+
 }
 
 export function setPageLanguage() {
