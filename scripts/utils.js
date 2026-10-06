@@ -118,7 +118,11 @@ export function getPathDetails() {
  * Fetch and return language of current page.
  * @returns language of current page
  */
-export function getLanguage() {
+export async function getLanguage() {
+  if (!SUPPORTED_LANGUAGES.length) {
+    await discoverLanguagesFromPlaceholders();
+  }
+
   if (!lang) {
     lang = getPathDetails().langCode;
     if (!SUPPORTED_LANGUAGES.includes(lang)) {
@@ -203,8 +207,8 @@ export async function discoverLanguagesFromPlaceholders() {
 
 }
 
-export function setPageLanguage() {
-  const currentLang = getLanguage();
+export async function setPageLanguage() {
+  const currentLang = await getLanguage();
   document.documentElement.lang = currentLang;
 }
 
