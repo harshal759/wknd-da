@@ -281,7 +281,7 @@ async function createLanguageSwitcher(navTools) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  await discoverLanguagesFromPlaceholders();
+  // await discoverLanguagesFromPlaceholders();
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const currentLang = getLanguage();
