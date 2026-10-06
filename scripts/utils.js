@@ -1,7 +1,6 @@
 import { fetchPlaceholders } from './placeholders.js';
 
 export const PATH_PREFIX = '/language-masters';
-export const SUPPORTED_LANGUAGES = [];
   
 export const INTERNL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
 let lang;
@@ -118,10 +117,10 @@ export function getPathDetails() {
  * Fetch and return language of current page.
  * @returns language of current page
  */
-export  function getLanguage() {
+export  function getLanguage(supportedLanguages = ['en']) {
   if (!lang) {
     lang = getPathDetails().langCode;
-    if (!SUPPORTED_LANGUAGES.includes(lang)) {
+    if (!supportedLanguages.includes(lang)) {
       lang = 'en';
     }
   }

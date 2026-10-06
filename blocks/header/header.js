@@ -4,7 +4,6 @@ import {
   getLanguage,
   computeLocalizedUrl,
   discoverLanguagesFromPlaceholders,
-  SUPPORTED_LANGUAGES,
 } from '../../scripts/utils.js';
 
 // media query match that indicates mobile/tablet width
@@ -179,8 +178,8 @@ async function buildBreadcrumbs() {
   return breadcrumbs;
 }
 
-async function createLanguageSwitcher(navTools) {
-  const currentLang = getLanguage();
+async function createLanguageSwitcher(navTools, langs = []) {
+  const currentLang = getLanguage(langs);
 
   const langWrap = document.createElement('div');
   langWrap.className = 'lang-switcher';
@@ -196,18 +195,12 @@ async function createLanguageSwitcher(navTools) {
   langMenu.className = 'lang-menu';
   langMenu.setAttribute('role', 'listbox');
 
-  const langs = await discoverLanguagesFromPlaceholders();
-
-  const uniqueLangs = [
-    ...new Set(SUPPORTED_LANGUAGES),
-  ];
-
-  if (uniqueLangs.length <= 1) {
+  if (langs.length <= 1) {
     langButton.disabled = true;
     langWrap.classList.add('single-lang');
   }
 
-  uniqueLangs.forEach((raw) => {
+  langs.forEach((raw) => {
     const code = String(raw)
       .replace('_', '-')
       .toLowerCase();
@@ -283,8 +276,9 @@ async function createLanguageSwitcher(navTools) {
 export default async function decorate(block) {
   // await discoverLanguagesFromPlaceholders();
   // load nav as fragment
+  const langs = await discoverLanguagesFromPlaceholders();
   const navMeta = getMetadata('nav');
-  const currentLang = getLanguage();
+  const currentLang = getLanguage(langs);
   const defaultNavPath = currentLang === 'en' ? '/nav' : `/${currentLang}/nav`;
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : defaultNavPath;
   const fragment = await loadFragment(navPath);
@@ -323,12 +317,13 @@ export default async function decorate(block) {
   }
 
   const navTools = nav.querySelector('.nav-tools');
+
   if (navTools) {
     const search = navTools.querySelector('a[href*="search"]');
     if (search && search.textContent === '') {
       search.setAttribute('aria-label', 'Search');
     }
-    await createLanguageSwitcher(navTools);
+    await createLanguageSwitcher(navTools, langs);
   }
 
   // hamburger for mobile
