@@ -178,7 +178,7 @@ async function buildBreadcrumbs() {
   return breadcrumbs;
 }
 
-async function createLanguageSwitcher(navTools, langs = []) {
+async function createLanguageSwitcher(navTools, langs = ['en']) {
   const currentLang = getLanguage(langs);
 
   const langWrap = document.createElement('div');
