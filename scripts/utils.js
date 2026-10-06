@@ -187,18 +187,14 @@ export async function discoverLanguagesFromPlaceholders() {
       .split(',')
       .map((s) => s && s.trim())
       .filter(Boolean);
-      SUPPORTED_LANGUAGES.length = 0;
-      SUPPORTED_LANGUAGES.push(...parsed);
       
-    if (parsed.length) return SUPPORTED_LANGUAGES;
+    if (parsed.length) return parsed;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.warn('discoverLanguagesFromPlaceholders failed', e);
   }
-  SUPPORTED_LANGUAGES.length = 0;
-  SUPPORTED_LANGUAGES.push('en');
 
-  return SUPPORTED_LANGUAGES;
+  return ['en'];
 
 }
 
