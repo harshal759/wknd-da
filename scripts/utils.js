@@ -1,13 +1,7 @@
 import { fetchPlaceholders } from './placeholders.js';
 
 export const PATH_PREFIX = '/language-masters';
-export const SUPPORTED_LANGUAGES = [
-  'en',    // English
-  'fr',    // French
-  'de',
-  'zh',
-  'hi',    // German
-  ];
+export const SUPPORTED_LANGUAGES = [];
   
 export const INTERNL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
 let lang;
@@ -194,6 +188,9 @@ export async function discoverLanguagesFromPlaceholders() {
       .split(',')
       .map((s) => s && s.trim())
       .filter(Boolean);
+      SUPPORTED_LANGUAGES.length = 0;
+      SUPPORTED_LANGUAGES.push(...parsed);
+      
     if (parsed.length) return parsed;
   } catch (e) {
     // eslint-disable-next-line no-console
