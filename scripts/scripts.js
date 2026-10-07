@@ -345,7 +345,18 @@ loadPage();
 fetch('https://da-sc.adobeaem.workers.dev/live/harshal759/wknd-da/people/saira')
   .then((response) => response.json())
   .then((person) => {
-    console.log('Person data:', person);
+   const main = document.querySelector('main');
+
+    if (!main) return;
+
+    const personDiv = document.createElement('div');
+    personDiv.innerHTML = `
+      <h2>${person.name}</h2>
+      <p>Age: ${person.age}</p>
+      <p>Email: ${person.email}</p>
+    `;
+
+    main.appendChild(personDiv);
   })
   .catch((error) => {
     console.error('Person fetch failed:', error);
