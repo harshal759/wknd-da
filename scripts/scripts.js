@@ -340,3 +340,13 @@ loadPage();
   // eslint-disable-next-line import/no-unresolved
   import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());
+
+// Temporary Structured Content test
+fetch('https://da-sc.adobeaem.workers.dev/live/harshal759/wknd-da/people/saira')
+  .then((response) => response.json())
+  .then((person) => {
+    console.log('Person data:', person);
+  })
+  .catch((error) => {
+    console.error('Person fetch failed:', error);
+  });
