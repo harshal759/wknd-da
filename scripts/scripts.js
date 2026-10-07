@@ -351,9 +351,9 @@ fetch('https://da-sc.adobeaem.workers.dev/live/harshal759/wknd-da/people/saira')
 
     const personDiv = document.createElement('div');
     personDiv.innerHTML = `
-      <h2>${person.name}</h2>
-      <p>Age: ${person.age}</p>
-      <p>Email: ${person.email}</p>
+      <h2>${person.data.name}</h2>
+      <p>Age: ${person.data.age}</p>
+      <p>Email: ${person.data.email}</p>
     `;
 
     main.appendChild(personDiv);
