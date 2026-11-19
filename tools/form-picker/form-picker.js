@@ -248,17 +248,14 @@ function filterForms(searchText, formsList) {
  * @param {Object} actions - DA SDK actions object
  * @param {Object} form - Selected form object
  */
-function handleFormSelect(actions, form) {
-  // if (!actions?.sendHTML) {
-  //   showMessage('Cannot insert form: Editor not available', true);
-  //   return;
-  // }
 
-  // const formUrl = getFormUrl(form.path);
 
-  // // Insert as a link that the form block will consume
-  // actions.sendHTML(`<p><a href="${formUrl}">${formUrl}</a></p>`);
-  // actions.closeLibrary();
+async function handleFormSelect(actions, form) {
+  if (!actions?.sendHTML) {
+    showMessage('Cannot insert form: Editor not available', true);
+    return;
+  }
+
   const formUrl = getFormUrl(form.path);
 
   const html = `
@@ -273,7 +270,6 @@ function handleFormSelect(actions, form) {
   await actions.sendHTML(html);
   actions.closeLibrary();
 }
-
 
 /**
  * Detects if running in standalone mode (not in DA iframe)
