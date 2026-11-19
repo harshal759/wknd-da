@@ -78,9 +78,14 @@ async function handleSubmit(form) {
 }
 
 export default async function decorate(block) {
-  const links = [...block.querySelectorAll('a')].map((a) => a.href);
-  const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
-  const submitLink = links.find((link) => link !== formLink);
+  // const links = [...block.querySelectorAll('a')].map((a) => a.href);
+  // const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
+  // const submitLink = links.find((link) => link !== formLink);
+  const links = [...block.children];
+
+  const formLink = links[0]?.children[1]?.querySelector('a')?.title;
+  const submitLink = links[1]?.children[1]?.querySelector('a')?.title;
+  
   if (!formLink || !submitLink) return;
 
   const form = await createForm(formLink, submitLink);
