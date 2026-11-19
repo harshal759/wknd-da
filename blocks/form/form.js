@@ -3,13 +3,23 @@ import createField from './form-fields.js';
 async function createForm(formHref, submitHref) {
   // const { pathname } = new URL(formHref);
   // const resp = await fetch(pathname);
-  const url = new URL(formHref);
+  console.log('Fetching:', formHref);
 
-  console.log('Full URL:', url.href);
-  console.log('Pathname:', url.pathname);
+  try {
+    const resp = await fetch(formHref);
 
-  const resp = await fetch(url.href);
+    console.log('Response status:', resp.status);
+    console.log('Response URL:', resp.url);
+
+    if (!resp.ok) {
+      throw new Error(`HTTP error: ${resp.status}`);
+    }
+
   const json = await resp.json();
+  }catch (error) {
+    console.error('Form fetch error:', error);
+    throw error;
+  }
 
   const form = document.createElement('form');
   form.dataset.action = submitHref;
