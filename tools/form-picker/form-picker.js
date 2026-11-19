@@ -82,7 +82,9 @@ function getBaseUrl() {
  * @returns {string} Full URL
  */
 function getFormUrl(formPath) {
-  return `${getBaseUrl()}${formPath}`;
+  const baseUrl = new URL(CONFIG.formsIndexUrl).origin;
+  const htmlPath = formPath.replace(/\.html$/, '');
+  return `${baseUrl}${htmlPath}.json`;
 }
 
 /**
