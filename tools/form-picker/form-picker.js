@@ -251,20 +251,20 @@ function filterForms(searchText, formsList) {
 
 
 async function handleFormSelect(actions, form) {
-  if (!actions?.sendHTML) {
-    showMessage('Cannot insert form: Editor not available', true);
-    return;
-  }
-
   const formUrl = getFormUrl(form.path);
 
   const html = `
-    <div class="form">
-      <div>
-        <div><p>Form definition</p></div>
-        <div><a href="${formUrl}">${formUrl}</a></div>
-      </div>
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td colspan="2"><p>form</p></td>
+        </tr>
+        <tr>
+          <td><p>Form definition</p></td>
+          <td><p><a href="${formUrl}">${formUrl}</a></p></td>
+        </tr>
+      </tbody>
+    </table>
   `;
 
   await actions.sendHTML(html);
