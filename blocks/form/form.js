@@ -1,8 +1,14 @@
 import createField from './form-fields.js';
 
 async function createForm(formHref, submitHref) {
-  const { pathname } = new URL(formHref);
-  const resp = await fetch(pathname);
+  // const { pathname } = new URL(formHref);
+  // const resp = await fetch(pathname);
+  const url = new URL(formHref);
+
+  console.log('Full URL:', url.href);
+  console.log('Pathname:', url.pathname);
+
+  const resp = await fetch(url.href);
   const json = await resp.json();
 
   const form = document.createElement('form');
@@ -85,7 +91,7 @@ export default async function decorate(block) {
 
   const formLink = links[0]?.children[1]?.querySelector('a')?.title;
   const submitLink = links[1]?.children[1]?.querySelector('a')?.title;
-  
+
   if (!formLink || !submitLink) return;
 
   const form = await createForm(formLink, submitLink);
