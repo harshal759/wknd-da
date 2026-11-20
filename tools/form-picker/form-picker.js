@@ -84,7 +84,7 @@ function getBaseUrl() {
 function getFormUrl(formPath) {
   const baseUrl = new URL(CONFIG.formsIndexUrl).origin;
   const htmlPath = formPath.replace(/\.html$/, '');
-  return `${baseUrl}${htmlPath}.json`;
+  return `${baseUrl}${htmlPath}sheet.json`;
 }
 
 /**
