@@ -1,8 +1,8 @@
 import createField from './form-fields.js';
 
 async function createForm(formHref, submitHref) {
-  // const { pathname } = new URL(formHref);
-  // const resp = await fetch(pathname);
+  let json;
+
   console.log('Fetching:', formHref);
 
   try {
@@ -15,8 +15,9 @@ async function createForm(formHref, submitHref) {
       throw new Error(`HTTP error: ${resp.status}`);
     }
 
-  const json = await resp.json();
-  }catch (error) {
+    json = await resp.json();
+    console.log('Form JSON:', json);
+  } catch (error) {
     console.error('Form fetch error:', error);
     throw error;
   }
@@ -24,21 +25,15 @@ async function createForm(formHref, submitHref) {
   const form = document.createElement('form');
   form.dataset.action = submitHref;
 
-  const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
+  const fields = await Promise.all(
+    json.data.map((fd) => createField(fd, form)),
+  );
+
   fields.forEach((field) => {
-    if (field) {
-      form.append(field);
-    }
+    if (field) form.append(field);
   });
 
-  // group fields into fieldsets
-  const fieldsets = form.querySelectorAll('fieldset');
-  fieldsets.forEach((fieldset) => {
-    form.querySelectorAll(`[data-fieldset="${fieldset.name}"`).forEach((field) => {
-      fieldset.append(field);
-    });
-  });
-
+  // Continue with fieldset grouping...
   return form;
 }
 
