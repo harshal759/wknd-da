@@ -7,13 +7,15 @@ import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 // ============================================
 const CONFIG = {
   // Full URL to the external forms query index
-  formsIndexUrl: 'https://main--public-bodea-site--milandevnath-aem.aem.live/query-index-forms.json',
+  // formsIndexUrl: 'https://main--public-bodea-site--milandevnath-aem.aem.live/query-index-forms.json',
+  formsIndexUrl: 'https://author-p35437-e2207568.adobeaemcloud.com/adobe/forms/af/listforms',
 
   // Filter to identify form pages in the index (set to null to show all)
   pathFilter: null,
 
   // Field mappings from your index structure
   fields: {
+    id: 'id',
     title: 'title',
     path: 'path',
     description: 'description',
@@ -83,8 +85,9 @@ function getBaseUrl() {
  */
 function getFormUrl(formPath) {
   const baseUrl = new URL(CONFIG.formsIndexUrl).origin;
-  const htmlPath = formPath.replace(/\.html$/, '');
-  return `${baseUrl}${htmlPath}sheet.json`;
+  // const htmlPath = formPath.replace(/\.html$/, '');
+  // return `${baseUrl}${htmlPath}.json`;
+  return `${baseUrl}/adobe/forms/af/${formId}`;
 }
 
 /**
