@@ -346,6 +346,7 @@ function normalizeField(fd) {
     'plain-text': 'plaintext',
     'radio-group': 'radio',
     'number-input': 'number',
+    button: 'submit',
   };
 
   const normalizedType = String(fieldType).toLowerCase();
