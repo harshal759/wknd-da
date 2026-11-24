@@ -284,6 +284,12 @@ const FIELD_CREATOR_FUNCTIONS = {
   fieldset: createFieldset,
   checkbox: createCheckbox,
   radio: createRadio,
+  // Generic input fields
+  text: createInput,
+  email: createInput,
+  tel: createInput,
+  date: createInput,
+  number: createInput,
 };
 // added a normal function to normalize the field 
 // data structure to match the expected format for field creation. 
