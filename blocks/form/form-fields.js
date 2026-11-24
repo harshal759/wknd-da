@@ -10,13 +10,12 @@ if (fd.Fieldset) {
   return fieldWrapper;
 }
 
-const ids = [];
+const ids = new Map();
 function generateFieldId(fd, suffix = '') {
-  const slug = toClassName(`form-${fd.Name}${suffix}`);
-  ids[slug] = ids[slug] || 0;
-  const idSuffix = ids[slug] ? `-${ids[slug]}` : '';
-  ids[slug] += 1;
-  return `${slug}${idSuffix}`;
+  const slug = toClassName(`form-${fd.Name || fd.Type}${suffix}`);
+   const count = ids.get(slug) || 0;
+  ids.set(slug, count + 1);
+  return count ? `${slug}-${count}` : slug;
 }
 
 function createLabel(fd) {
@@ -28,6 +27,11 @@ function createLabel(fd) {
     label.dataset.required = true;
   }
   return label;
+}
+
+function isRequired(fd) {
+  return fd.Mandatory === true
+    || ['true', 'x'].includes(String(fd.Mandatory).toLowerCase());
 }
 
 function setCommonAttributes(field, fd) {
@@ -63,45 +67,60 @@ const createPlaintext = (fd) => {
   return { field: text, fieldWrapper };
 };
 
+
 const createSelect = async (fd) => {
   const select = document.createElement('select');
   setCommonAttributes(select, fd);
-  const addOption = ({ text, value }) => {
+
+  const addOption = ({ text, label, value }) => {
     const option = document.createElement('option');
-    option.text = text.trim();
-    option.value = value.trim();
-    if (option.value === select.value) {
-      option.setAttribute('selected', '');
-    }
+    option.textContent = label ?? text ?? String(value);
+    option.value = String(value);
+    if (String(value) === String(fd.Value)) {
+  option.selected = true;
+}
     select.add(option);
     return option;
   };
 
   if (fd.Placeholder) {
-    const ph = addOption({ text: fd.Placeholder, value: '' });
-    ph.setAttribute('disabled', '');
+    const placeholder = addOption({
+      text: fd.Placeholder,
+      value: '',
+    });
+    placeholder.disabled = true;
+    placeholder.selected = !fd.Value;
   }
 
-  if (fd.Options) {
+  if (Array.isArray(fd.Options)) {
+    fd.Options.forEach(addOption);
+  } else if (typeof fd.Options === 'string' && fd.Options) {
     let options = [];
-    if (fd.Options.startsWith('https://')) {
+
+    if (/^https:\/\//i.test(fd.Options)) {
       const optionsUrl = new URL(fd.Options);
-      const resp = await fetch(`${optionsUrl.pathname}${optionsUrl.search}`);
-      const json = await resp.json();
-      json.data.forEach((opt) => {
-        options.push({
-          text: opt.Option,
-          value: opt.Value || opt.Option,
-        });
-      });
+      const response = await fetch(
+        `${optionsUrl.pathname}${optionsUrl.search}`,
+      );
+
+      if (!response.ok) {
+        throw new Error(`Options request failed: ${response.status}`);
+      }
+
+      const json = await response.json();
+
+      options = (json.data || []).map((option) => ({
+        text: option.Option,
+        value: option.Value || option.Option,
+      }));
     } else {
-      options = fd.Options.split(',').map((opt) => ({
-        text: opt.trim(),
-        value: opt.trim().toLowerCase(),
+      options = fd.Options.split(',').map((option) => ({
+        text: option.trim(),
+        value: option.trim().toLowerCase(),
       }));
     }
 
-    options.forEach((opt) => addOption(opt));
+    options.forEach(addOption);
   }
 
   const fieldWrapper = createFieldWrapper(fd);
@@ -111,8 +130,11 @@ const createSelect = async (fd) => {
   return { field: select, fieldWrapper };
 };
 
+
 const createConfirmation = (fd, form) => {
-  form.dataset.confirmation = new URL(fd.Value).pathname;
+  if (!fd.Value) return {};
+
+  form.dataset.confirmation = new URL(fd.Value, window.location.origin).pathname;
 
   return {};
 };
@@ -166,6 +188,9 @@ const createFieldset = (fd) => {
   if (fd.Label) {
     const legend = document.createElement('legend');
     legend.textContent = fd.Label;
+    if (isRequired(fd)) {
+  legend.dataset.required = true;
+}
     field.append(legend);
   }
 
@@ -206,18 +231,53 @@ const createCheckbox = (fd) => {
 };
 
 const createRadio = (fd) => {
-  const { field, fieldWrapper } = createInput(fd);
-  if (!field.value) field.value = fd.Label || 'on';
+  const fieldset = document.createElement('fieldset');
+  fieldset.id = fd.Id;
+
+  if (fd.Label) {
+    const legend = document.createElement('legend');
+    legend.textContent = fd.Label;
+    fieldset.append(legend);
+  }
+
+  const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.classList.add('selection-wrapper');
 
-  return { field, fieldWrapper };
+  if (!Array.isArray(fd.Options) || fd.Options.length === 0) {
+    console.warn(`No options provided for radio group: ${fd.Name}`);
+    return { field: fieldset, fieldWrapper };
+  }
+
+  fd.Options.forEach((option, index) => {
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.id = generateFieldId(fd, `-option-${index}`);
+    input.name = fd.Name;
+    input.value = String(option.value ?? '');
+
+    input.required = index === 0 && isRequired(fd);
+
+    if (String(option.value) === String(fd.Value)) {
+      input.checked = true;
+    }
+
+    const label = document.createElement('label');
+    label.htmlFor = input.id;
+    label.textContent = option.label ?? String(option.value);
+
+    fieldset.append(input, label);
+  });
+
+  fieldWrapper.append(fieldset);
+
+  return { field: fieldset, fieldWrapper };
 };
 
 const FIELD_CREATOR_FUNCTIONS = {
   select: createSelect,
   heading: createHeading,
   plaintext: createPlaintext,
-  'text-area': createTextArea,
+  textarea: createTextArea,
   toggle: createToggle,
   submit: createSubmit,
   confirmation: createConfirmation,
@@ -228,24 +288,49 @@ const FIELD_CREATOR_FUNCTIONS = {
 // added a normal function to normalize the field 
 // data structure to match the expected format for field creation. 
 // This function ensures that the field data has consistent property names and default values.
-function normalizeField(fd) {
-  let type = fd.fieldType || fd.Type || 'text';
 
-  // Map AEM Forms field types to your existing field creators
-  if (type === 'text-input') type = 'text';
-  if (type === 'button' && fd.buttonType === 'submit') type = 'submit';
+function normalizeField(fd) {
+  const componentType = fd[':type']?.split('/').pop()
+    || fd.properties?.aueComponentId
+    || '';
+
+  const rawType = fd.fieldType || fd.Type;
+
+  // More specific component metadata takes precedence for generic text inputs.
+  const fieldType = rawType || componentType || 'text';
+
+  const typeMap = {
+    'text-input': 'text',
+    'telephone-input': 'tel',
+    telephoneinput: 'tel',
+    'date-input': 'date',
+    'drop-down': 'select',
+    'multiline-input': 'textarea',
+    'plain-text': 'plaintext',
+    'radio-group': 'radio',
+    'number-input': 'number',
+  };
+
+  const normalizedType = String(fieldType).toLowerCase();
+const type = typeMap[normalizedType] || normalizedType;
 
   return {
     ...fd,
-    Id: fd.id || fd.Id,
-    Name: fd.name || fd.Name,
+    Id: fd.id || fd.Id || '',
+    Name: fd.name || fd.Name || '',
     Type: type,
     Label: fd.label?.value || fd.Label || '',
     Mandatory: fd.required ?? fd.Mandatory ?? false,
     Placeholder: fd.placeholder || fd.Placeholder || '',
     Value: fd.value ?? fd.Value ?? '',
-    Fieldset: fd.Fieldset,
-    Style: fd.Style,
+    Options: fd.enum
+      ? fd.enum.map((value, index) => ({
+        value,
+        label: fd.enumNames?.[index] ?? String(value),
+      }))
+      : fd.Options || [],
+    Fieldset: fd.Fieldset || '',
+    Style: fd.Style || '',
   };
 }
 
@@ -253,8 +338,12 @@ export default async function createField(fd, form) {
   const fieldData = normalizeField(fd);
 
   fieldData.Id = fieldData.Id || generateFieldId(fieldData);
-  const type = fieldData.Type.toLowerCase();
-  const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
+  const type = String(fieldData.Type || 'unknown').toLowerCase();
+  const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type];
+  if (!createFieldFunc) {
+  console.warn(`Unsupported AEM Forms field type: ${type}`);
+  return null;
+}
   const fieldElements = await createFieldFunc(fieldData, form);
 
   return fieldElements.fieldWrapper;
