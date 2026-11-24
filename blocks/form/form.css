@@ -168,155 +168,173 @@
 .form .toggle-wrapper input:checked + .slider::before {
   transform: translateX(24px);
 }
+/* new css */
 
-
-/* new css demo */
-
-/* ============================================
-   Dynamic Form Styling
-   ============================================ */
-
-.form-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 40px;
-  background: #fff;
+/* Form card */
+.form-container .form-wrapper {
   box-sizing: border-box;
+  width: 100%;
+  padding: 48px 60px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
 }
 
-.form-wrapper .form.block {
+/* Form layout */
+.form-container .form form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   width: 100%;
 }
 
-.form-wrapper form {
+/* Individual fields */
+.form-container .form .field-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-/* Individual field wrappers */
-.form-wrapper .field-wrapper {
-  display: flex;
-  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
   width: 100%;
   margin: 0;
-  gap: 6px;
+}
+
+.form-container .form form > .field-wrapper + .field-wrapper {
+  margin-top: 48px;
 }
 
 /* Labels */
-.form-wrapper .field-wrapper label {
-  color: #334155;
-  font-weight: 500;
-  font-size: 15px;
-  margin-bottom: 0;
-  display: inline-block;
-}
-
-/* Required indicator */
-.form-wrapper .field-wrapper label[data-required="true"]::after {
-  content: " *";
-  color: #ef4444;
-  font-weight: 600;
-}
-
-/* Text, email, select and textarea fields */
-.form-wrapper input[type="text"],
-.form-wrapper input[type="email"],
-.form-wrapper input[type="password"],
-.form-wrapper input[type="number"],
-.form-wrapper select,
-.form-wrapper textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px 16px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 15px;
-  color: #1e293b;
-  background: #fff;
-  transition: all 0.2s ease;
+.form-container .form label,
+.form-container .form fieldset > legend {
   margin: 0;
-  font-family: inherit;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #4b5563;
 }
 
-/* Focus state */
-.form-wrapper input:focus,
-.form-wrapper select:focus,
-.form-wrapper textarea:focus {
-  outline: none;
-  border-color: #2874F0;
-  box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.1);
+/* Required asterisk */
+.form-container .form label[data-required]::after {
+  content: '*';
+  color: #e53935;
+  margin-left: 4px;
 }
 
-/* Hover state */
-.form-wrapper input:hover,
-.form-wrapper select:hover,
-.form-wrapper textarea:hover {
-  border-color: #94a3b8;
+/* Inputs, dropdowns and textareas */
+.form-container .form input,
+.form-container .form select,
+.form-container .form textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 52px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #8995a3;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  font-size: 20px;
+  font-weight: 400;
+  transition: border-color 0.2s ease;
 }
 
-/* Placeholder */
-.form-wrapper input::placeholder,
-.form-wrapper textarea::placeholder {
-  color: #94a3b8;
-  font-size: 14px;
+.form-container .form input::placeholder,
+.form-container .form textarea::placeholder {
+  color: #777;
+  opacity: 1;
+}
+
+.form-container .form input:hover,
+.form-container .form select:hover,
+.form-container .form textarea:hover {
+  border-color: #52677e;
+}
+
+.form-container .form input:focus,
+.form-container .form select:focus,
+.form-container .form textarea:focus {
+  outline: 2px solid #5f8fe0;
+  outline-offset: 2px;
+}
+
+/* Textarea */
+.form-container .form textarea {
+  height: 100px;
+  resize: vertical;
 }
 
 /* Submit button wrapper */
-.form-wrapper .submit-wrapper {
-  width: 100%;
-  margin-top: 12px;
+.form-container .form .submit-wrapper {
+  margin-top: 44px !important;
 }
 
 /* Submit button */
-.form-wrapper .submit-wrapper button {
-  background: #2874F0;
-  color: #fff;
-  padding: 16px 60px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+.form-container .form .button {
+  width: 197px;
+  max-width: 100%;
+  min-height: 67px;
+  padding: 16px 30px;
   border: none;
-  border-radius: 4px;
+  border-radius: 0;
+  background-color: #5f8fe0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(40, 116, 240, 0.2);
+  transition: background-color 0.2s ease;
 }
 
-/* Button hover */
-.form-wrapper .submit-wrapper button:hover {
-  background: #0052cc;
-  box-shadow: 0 4px 12px rgba(40, 116, 240, 0.3);
-  transform: translateY(-1px);
+.form-container .form .button:hover {
+  background-color: #4778c5;
 }
 
-/* Button active */
-.form-wrapper .submit-wrapper button:active {
-  transform: translateY(0);
+/* Keep checkbox and radio layouts intact */
+.form-container .form .selection-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Disabled button */
-.form-wrapper button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.form-container .form .selection-wrapper input {
+  width: auto;
+  height: auto;
 }
 
-/* Mobile responsive */
+/* Responsive */
 @media (max-width: 768px) {
-  .form-wrapper {
-    padding: 40px 20px;
+  .form-container .form-wrapper {
+    padding: 32px 24px;
   }
 
-  .form-wrapper .submit-wrapper button {
+  .form-container .form label,
+  .form-container .form fieldset > legend {
+    font-size: 17px;
+  }
+
+  .form-container .form input,
+  .form-container .form select,
+  .form-container .form textarea {
+    font-size: 16px;
+    height: 48px;
+  }
+
+  .form-container .form textarea {
+    height: 100px;
+  }
+
+  .form-container .form form > .field-wrapper + .field-wrapper {
+    margin-top: 30px;
+  }
+
+  .form-container .form .submit-wrapper {
+    margin-top: 32px !important;
+  }
+
+  .form-container .form .button {
     width: 100%;
-    padding: 16px 32px;
+    min-height: 55px;
   }
 }
 
-@media (max-width: 480px) {
-  .form-wrapper {
-    padding: 30px 16px;
-  }
-}
