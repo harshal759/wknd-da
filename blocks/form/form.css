@@ -173,8 +173,9 @@
 /* Form card */
 .form-container .form-wrapper {
   box-sizing: border-box;
-  width: 100%;
-  padding: 48px 60px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
@@ -271,12 +272,9 @@
 
 /* Submit button */
 .form-container .form .button {
-  width: 197px;
-  max-width: 100%;
-  min-height: 67px;
-  padding: 16px 30px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 0;
+  border-radius: 10px;
   background-color: #5f8fe0;
   color: #fff;
   font-size: 20px;
