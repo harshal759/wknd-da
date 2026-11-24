@@ -4,9 +4,9 @@ function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
   if (fd.Style) fieldWrapper.className = fd.Style;
   fieldWrapper.classList.add('field-wrapper', `${fd.Type}-wrapper`);
-
+if (fd.Fieldset) {
   fieldWrapper.dataset.fieldset = fd.Fieldset;
-
+ }
   return fieldWrapper;
 }
 
@@ -24,7 +24,7 @@ function createLabel(fd) {
   label.id = generateFieldId(fd, '-label');
   label.textContent = fd.Label || fd.Name;
   label.setAttribute('for', fd.Id);
-  if (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x') {
+   if (fd.Mandatory === true || ['true', 'x'].includes(String(fd.Mandatory).toLowerCase())) {
     label.dataset.required = true;
   }
   return label;
@@ -33,9 +33,9 @@ function createLabel(fd) {
 function setCommonAttributes(field, fd) {
   field.id = fd.Id;
   field.name = fd.Name;
-  field.required = fd.Mandatory && (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x');
-  field.placeholder = fd.Placeholder;
-  field.value = fd.Value;
+  field.required = fd.Mandatory === true || ['true', 'x'].includes(String(fd.Mandatory).toLowerCase());
+  if (fd.Placeholder) field.placeholder = fd.Placeholder;
+  if (fd.Value !== undefined && fd.Value !== null) field.value = fd.Value;
 }
 
 const createHeading = (fd) => {
@@ -225,12 +225,37 @@ const FIELD_CREATOR_FUNCTIONS = {
   checkbox: createCheckbox,
   radio: createRadio,
 };
+// added a normal function to normalize the field 
+// data structure to match the expected format for field creation. 
+// This function ensures that the field data has consistent property names and default values.
+function normalizeField(fd) {
+  let type = fd.fieldType || fd.Type || 'text';
+
+  // Map AEM Forms field types to your existing field creators
+  if (type === 'text-input') type = 'text';
+  if (type === 'button' && fd.buttonType === 'submit') type = 'submit';
+
+  return {
+    ...fd,
+    Id: fd.id || fd.Id,
+    Name: fd.name || fd.Name,
+    Type: type,
+    Label: fd.label?.value || fd.Label || '',
+    Mandatory: fd.required ?? fd.Mandatory ?? false,
+    Placeholder: fd.placeholder || fd.Placeholder || '',
+    Value: fd.value ?? fd.Value ?? '',
+    Fieldset: fd.Fieldset,
+    Style: fd.Style,
+  };
+}
 
 export default async function createField(fd, form) {
-  fd.Id = fd.Id || generateFieldId(fd);
-  const type = fd.Type.toLowerCase();
+  const fieldData = normalizeField(fd);
+
+  fieldData.Id = fieldData.Id || generateFieldId(fieldData);
+  const type = fieldData.Type.toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
-  const fieldElements = await createFieldFunc(fd, form);
+  const fieldElements = await createFieldFunc(fieldData, form);
 
   return fieldElements.fieldWrapper;
 }

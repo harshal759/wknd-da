@@ -1,20 +1,16 @@
 import createField from './form-fields.js';
 
-async function createForm(formHref, submitHref) {
-  let json;
-
+async function createForm(formHref) {
   console.log('Fetching:', formHref);
+  let json;
 
   try {
     const resp = await fetch(formHref);
-
     console.log('Response status:', resp.status);
     console.log('Response URL:', resp.url);
-
     if (!resp.ok) {
       throw new Error(`HTTP error: ${resp.status}`);
     }
-
     json = await resp.json();
     console.log('Form JSON:', json);
   } catch (error) {
@@ -22,11 +18,19 @@ async function createForm(formHref, submitHref) {
     throw error;
   }
 
-  const form = document.createElement('form');
-  form.dataset.action = submitHref;
+  const definition = json.afModelDefinition;
+  if (!definition) {
+    throw new Error('Invalid form JSON: afModelDefinition not found');
+  }
 
+  const form = document.createElement('form');
+  form.dataset.action = new URL(definition.action, formHref).href;;
+  const items = definition[':items'] || {};
+  const itemsOrder = definition[':itemsOrder'] || Object.keys(items);
   const fields = await Promise.all(
-    json.data.map((fd) => createField(fd, form)),
+    itemsOrder
+    .filter((key) => items[key])
+    .map((key) => createField(items[key], form)),
   );
 
   fields.forEach((field) => {
@@ -60,7 +64,7 @@ async function handleSubmit(form) {
   const submit = form.querySelector('button[type="submit"]');
   try {
     form.setAttribute('data-submitting', 'true');
-    submit.disabled = true;
+    if (submit) submit.disabled = true;
 
     // create payload
     const payload = generatePayload(form);
@@ -84,35 +88,40 @@ async function handleSubmit(form) {
     console.error(e);
   } finally {
     form.setAttribute('data-submitting', 'false');
-    submit.disabled = false;
+    if (submit) submit.disabled = false;
   }
 }
 
 export default async function decorate(block) {
-  // const links = [...block.querySelectorAll('a')].map((a) => a.href);
-  // const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
-  // const submitLink = links.find((link) => link !== formLink);
-  const links = [...block.children];
+  const formLink = block.querySelector('a')?.href;
 
-  const formLink = links[0]?.children[1]?.querySelector('a')?.title;
-  const submitLink = links[1]?.children[1]?.querySelector('a')?.title;
+  if (!formLink) {
+    console.error('Form definition URL not found');
+    return;
+  }
 
-  if (!formLink || !submitLink) return;
+  try {
+    const form = await createForm(formLink);
 
-  const form = await createForm(formLink, submitLink);
-  block.replaceChildren(form);
+    block.replaceChildren(form);
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const valid = form.checkValidity();
-    if (valid) {
-      handleSubmit(form);
-    } else {
-      const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
-      if (firstInvalidEl) {
-        firstInvalidEl.focus();
-        firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const valid = form.checkValidity();
+
+      if (valid) {
+        handleSubmit(form);
+      } else {
+        const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
+
+        if (firstInvalidEl) {
+          firstInvalidEl.focus();
+          firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error('Unable to render form:', error);
+  }
 }
