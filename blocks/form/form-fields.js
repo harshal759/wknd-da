@@ -58,13 +58,44 @@ const createHeading = (fd) => {
 const createPlaintext = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
 
-  const text = document.createElement('p');
-  text.textContent = fd.Value || fd.Label;
-  text.id = fd.Id;
+  const content = document.createElement('div');
+  content.id = fd.Id;
 
-  fieldWrapper.append(text);
+  if (fd.RichText) {
+    const template = document.createElement('template');
+    template.innerHTML = fd.Value || '';
 
-  return { field: text, fieldWrapper };
+    // Allow only the HTML elements needed for rich text.
+    const allowedTags = [
+      'H1', 'H2', 'H3', 'H4',
+      'P', 'BR', 'B', 'STRONG',
+      'I', 'EM', 'UL', 'OL', 'LI',
+      'A',
+    ];
+
+    template.content.querySelectorAll('*').forEach((element) => {
+      if (!allowedTags.includes(element.tagName)) {
+        element.replaceWith(...element.childNodes);
+      } else {
+        [...element.attributes].forEach((attribute) => {
+          if (
+            element.tagName !== 'A'
+            || !['href', 'target', 'rel'].includes(attribute.name)
+          ) {
+            element.removeAttribute(attribute.name);
+          }
+        });
+      }
+    });
+
+    content.append(template.content);
+  } else {
+    content.textContent = fd.Value || fd.Label;
+  }
+
+  fieldWrapper.append(content);
+
+  return { field: content, fieldWrapper };
 };
 
 
@@ -337,6 +368,7 @@ const type = typeMap[normalizedType] || normalizedType;
       : fd.Options || [],
     Fieldset: fd.Fieldset || '',
     Style: fd.Style || '',
+    RichText: fd.richText ?? fd.RichText ?? false,
   };
 }
 
