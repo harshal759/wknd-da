@@ -83,11 +83,16 @@ function getBaseUrl() {
  * @param {string} formPath - Path to the form
  * @returns {string} Full URL
  */
-function getFormUrl(formPath) {
+function getFormUrl(formId) {
   const baseUrl = new URL(CONFIG.formsIndexUrl).origin;
   // const htmlPath = formPath.replace(/\.html$/, '');
   // return `${baseUrl}${htmlPath}.json`;
   return `${baseUrl}/adobe/forms/af/${formId}`;
+}
+
+function getFormPreviewUrl(form) {
+  const baseUrl = new URL(CONFIG.formsIndexUrl).origin;
+  return `${baseUrl}${form.path}.html`;
 }
 
 /**
@@ -102,18 +107,17 @@ async function fetchForms() {
   }
 
   const json = await response.json();
-  let { data } = json;
-
-  // Apply path filter if configured
-  if (CONFIG.pathFilter) {
-    data = data.filter((item) => item[CONFIG.fields.path]?.startsWith(CONFIG.pathFilter));
-  }
+  const data = json.items || [];
 
   // Normalize data structure
   return data.map((form) => ({
-    title: form[CONFIG.fields.title] || form[CONFIG.fields.path] || 'Untitled Form',
-    path: form[CONFIG.fields.path],
-    description: form[CONFIG.fields.description] || '',
+    // title: form[CONFIG.fields.title] || form[CONFIG.fields.path] || 'Untitled Form',
+    // path: form[CONFIG.fields.path],
+    // description: form[CONFIG.fields.description] || '',
+     id: form.id,
+    title: form.title || 'Untitled Form',
+    path: form.path || '',
+    description: form.description || '',
   }));
 }
 
@@ -170,7 +174,7 @@ function createFormItem(form, onClick) {
 
   previewBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    window.open(getFormUrl(form.path), '_blank');
+    window.open(getFormPreviewUrl(form), '_blank');
   });
 
   // Show/hide preview on hover
@@ -254,7 +258,7 @@ function filterForms(searchText, formsList) {
 
 
 async function handleFormSelect(actions, form) {
-  const formUrl = getFormUrl(form.path);
+  const formUrl = getFormUrl(form.id);
 
   const html = `
     <table>
