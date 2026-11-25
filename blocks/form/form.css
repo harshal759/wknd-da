@@ -206,7 +206,6 @@
 /* Labels */
 .form-container .form label,
 .form-container .form fieldset > legend {
-  margin: 0;
   font-size: 20px;
   line-height: 1.4;
   font-weight: 400;
@@ -359,7 +358,7 @@
 }
 
 .form .radio-wrapper .radio-option input[type="radio"] {
-  width: 18px;
+  width: 20px;
   height: 18px;
   margin: 0;
   accent-color: #35b28c;
@@ -369,7 +368,7 @@
 .form .radio-wrapper .radio-option label {
   margin: 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 20px;
   color: #2c2c2c;
 }
 
