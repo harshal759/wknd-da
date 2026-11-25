@@ -336,3 +336,46 @@
   }
 }
 
+.form .radio-wrapper fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.form .radio-wrapper legend {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2c2c2c;
+}
+
+.form .radio-wrapper .radio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 24px;
+  margin-bottom: 10px;
+}
+
+.form .radio-wrapper .radio-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #35b28c;
+  cursor: pointer;
+}
+
+.form .radio-wrapper .radio-option label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #2c2c2c;
+}
+
+@media (max-width: 600px) {
+  .form .radio-wrapper .radio-option {
+    display: flex;
+    margin-right: 0;
+  }
+}

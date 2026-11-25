@@ -268,6 +268,11 @@ const createRadio = (fd) => {
   if (fd.Label) {
     const legend = document.createElement('legend');
     legend.textContent = fd.Label;
+
+    if (isRequired(fd)) {
+      legend.dataset.required = true;
+    }
+
     fieldset.append(legend);
   }
 
@@ -280,12 +285,14 @@ const createRadio = (fd) => {
   }
 
   fd.Options.forEach((option, index) => {
+    const optionWrapper = document.createElement('div');
+    optionWrapper.classList.add('radio-option');
+
     const input = document.createElement('input');
     input.type = 'radio';
     input.id = generateFieldId(fd, `-option-${index}`);
     input.name = fd.Name;
     input.value = String(option.value ?? '');
-
     input.required = index === 0 && isRequired(fd);
 
     if (String(option.value) === String(fd.Value)) {
@@ -296,7 +303,8 @@ const createRadio = (fd) => {
     label.htmlFor = input.id;
     label.textContent = option.label ?? String(option.value);
 
-    fieldset.append(input, label);
+    optionWrapper.append(input, label);
+    fieldset.append(optionWrapper);
   });
 
   fieldWrapper.append(fieldset);
