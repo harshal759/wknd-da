@@ -8,7 +8,7 @@ import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 const CONFIG = {
   // Full URL to the external forms query index
   // formsIndexUrl: 'https://main--public-bodea-site--milandevnath-aem.aem.live/query-index-forms.json',
-  formsIndexUrl: 'https://author-p35437-e2207568.adobeaemcloud.com/adobe/forms/af/listforms',
+  formsIndexUrl: 'https://publish-p35437-e2207568.adobeaemcloud.com/adobe/forms/af/listforms',
 
   // Filter to identify form pages in the index (set to null to show all)
   pathFilter: null,
